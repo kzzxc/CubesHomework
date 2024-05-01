@@ -4,9 +4,13 @@ public class Cube : MonoBehaviour
 {
     [SerializeField] private Renderer _renderer;
 
-    public void Initialize(Vector3 newScale)
+    private float _chanñeOfSplitting = 100f;
+    public float ChanñeOfSplitting => _chanñeOfSplitting;
+
+    public void Initialize(Vector3 newScale, float chanñeOfSplitting)
     {
         transform.localScale = newScale;
         _renderer.material.color = Random.ColorHSV();
+        _chanñeOfSplitting = chanñeOfSplitting;
     }
 }
