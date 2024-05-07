@@ -1,36 +1,45 @@
-using System.Collections;
 using UnityEngine;
 
-public class CubeSpawner : MonoBehaviour
+public class CubeSpawner : CubesPool
 {
-    [SerializeField] private Cube _prefab;
+    [SerializeField] private Cube[] _ObjectTemplates;
+    [SerializeField] private float _secnodsBetweenSpawn;
+
+    private float _elapserTime = 0;
 
     private int _minValueX = -15;
     private int _maxValueX = 16;
 
-    private int _minValueY = 5;
+    private int _minValueY = 15;
     private int _maxValueY = 15;
 
     private int _minValueZ = -15;
     private int _maxValueZ = 16;
 
-    private WaitForSeconds _wait = new WaitForSeconds(0.8f);
+    private void Start() => Initialize(_ObjectTemplates);
 
-    private void Start()
+    private void Update()
     {
-        StartCoroutine(Spawn());
-    }
+        _elapserTime += Time.deltaTime;
 
-    private IEnumerator Spawn()
-    {
-        while (true)
+        if (_elapserTime > _secnodsBetweenSpawn)
         {
-            Instantiate(_prefab, GetSpawnPointPosition(), Quaternion.identity);
-            yield return _wait;
+            if (TryGetObject(out Cube spawnableObject))
+            {
+                _elapserTime = 0;
+
+                SetObject(spawnableObject);
+            }
         }
     }
 
-    private Vector3 GetSpawnPointPosition()
+    private void SetObject(Cube spawnableObject)
+    {
+        spawnableObject.gameObject.SetActive(true);
+        spawnableObject.transform.position = GetRandomSpawnPosition();
+    }
+
+    private Vector3 GetRandomSpawnPosition()
     {
         int spawnPointX = Random.Range(_minValueX, _maxValueX);
         int spawnPointY = Random.Range(_minValueY, _maxValueY);

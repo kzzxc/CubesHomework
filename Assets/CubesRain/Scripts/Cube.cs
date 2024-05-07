@@ -8,40 +8,46 @@ public class Cube : MonoBehaviour
 
     private Coroutine _currentCoroutine;
 
-    private int _minLifetime = 2;
-    private int _maxLifetime = 5;
-    private int _lifetime = 1;
-
-    private WaitForSeconds _secondWait = new WaitForSeconds(1);
-
-    private void Update()
+    private void OnEnable()
     {
-        if (_lifetime <= 0)
-        {
-            StopCoroutine(_currentCoroutine);
-            Destroy(gameObject);
-        }
+        _collisionHandler.Falled += OnFalled;
+        _renderer.material.color = Color.white;
     }
 
-    private void OnEnable() => _collisionHandler.Falled += OnFalled;
+    private void OnDisable()
+    {
+        _collisionHandler.Falled -= OnFalled;
 
-    private void OnDisable() => _collisionHandler.Falled -= OnFalled;
+        if (_currentCoroutine != null)
+        {
+            StopCoroutine(_currentCoroutine);
+            _currentCoroutine = null;
+        }
+    }
 
     private void OnFalled()
     {
         if (_currentCoroutine == null)
-            _currentCoroutine = StartCoroutine(LifeTimer());
+            _currentCoroutine = StartCoroutine(UpdateCubeProperties());
     }
 
-    public IEnumerator LifeTimer()
+    private IEnumerator UpdateCubeProperties()
     {
-        _lifetime = Random.Range(_minLifetime, _maxLifetime);
         _renderer.material.color = Random.ColorHSV();
+        var lifetime = GetLifetime();
 
-        while (_lifetime > 0)
-        {
-            _lifetime--;
-            yield return _secondWait;
-        }
+        WaitForSeconds wait = new WaitForSeconds(lifetime);
+
+        yield return wait;
+
+        gameObject.SetActive(false);
+    }
+
+    private int GetLifetime()
+    {
+        int minLifetime = 2;
+        int maxLifetime = 5;
+
+        return Random.Range(minLifetime, maxLifetime);
     }
 }
