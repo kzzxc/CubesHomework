@@ -2,6 +2,8 @@
 
 public class BombSpawner : Pool<Bomb>
 {
+    private void Update() => UpdateCounterText();
+
     public void SpawnBomb(Vector3 position, float lifetime)
     {
         if (TryGetObject(out Bomb bomb))

@@ -3,11 +3,13 @@
 public class CubeSpawner : Pool<Cube>
 {
     [SerializeField] private float _secnodsBetweenSpawn;
-    
+
     private float _elapsedTime;
 
     private void Update()
     {
+        UpdateCounterText();
+        
         _elapsedTime += Time.deltaTime;
 
         if (_elapsedTime > _secnodsBetweenSpawn && TryGetObject(out Cube spawnableObject))
@@ -37,4 +39,5 @@ public class CubeSpawner : Pool<Cube>
 
         return new Vector3(spawnPointX, spawnPointY, spawnPointZ);
     }
+    
 }
