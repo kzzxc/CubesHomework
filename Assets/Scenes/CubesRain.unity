@@ -231,7 +231,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: s
 --- !u!222 &491326906
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1241,7 +1241,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: s
 --- !u!222 &1211284942
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1591,8 +1591,7 @@ MonoBehaviour:
   _text: {fileID: 491326905}
   _container: {fileID: 1667207343}
   _capacity: 20
-  _secnodsBetweenSpawn: 1
-  _cubeCounterText: {fileID: 0}
+  _secnodsBetweenSpawn: 0.5
 --- !u!1 &1825884426
 GameObject:
   m_ObjectHideFlags: 0
