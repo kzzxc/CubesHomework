@@ -3,13 +3,11 @@ using UnityEngine;
 
 public class CubeCollisionHandler : MonoBehaviour
 {
-    public event Action Falled;
+    public event Action Fall;
 
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.transform.TryGetComponent(out Platform platform))
-        {
-            Falled?.Invoke();
-        }
+            Fall?.Invoke();
     }
 }

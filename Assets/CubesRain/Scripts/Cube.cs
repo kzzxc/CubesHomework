@@ -1,22 +1,26 @@
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Cube : MonoBehaviour
 {
     [SerializeField] private CubeCollisionHandler _collisionHandler;
     [SerializeField] private Renderer _renderer;
-
+    
     private Coroutine _currentCoroutine;
+    private BombSpawner _bombSpawner;
+
+    private void Start() => _bombSpawner = FindObjectOfType<BombSpawner>();
 
     private void OnEnable()
     {
-        _collisionHandler.Falled += OnFalled;
+        _collisionHandler.Fall += OnFall;
         _renderer.material.color = Color.white;
     }
 
     private void OnDisable()
     {
-        _collisionHandler.Falled -= OnFalled;
+        _collisionHandler.Fall -= OnFall;
 
         if (_currentCoroutine != null)
         {
@@ -25,7 +29,7 @@ public class Cube : MonoBehaviour
         }
     }
 
-    private void OnFalled()
+    private void OnFall()
     {
         if (_currentCoroutine == null)
             _currentCoroutine = StartCoroutine(UpdateCubeProperties());
@@ -41,6 +45,8 @@ public class Cube : MonoBehaviour
         yield return wait;
 
         gameObject.SetActive(false);
+        
+        _bombSpawner.SpawnBomb(transform.position, GetLifetime());
     }
 
     private int GetLifetime()

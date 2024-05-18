@@ -1,35 +1,20 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class CubeSpawner : CubesPool
+public class CubeSpawner : Pool<Cube>
 {
-    [SerializeField] private Cube[] _ObjectTemplates;
     [SerializeField] private float _secnodsBetweenSpawn;
-
-    private float _elapserTime = 0;
-
-    private int _minValueX = -15;
-    private int _maxValueX = 16;
-
-    private int _minValueY = 15;
-    private int _maxValueY = 15;
-
-    private int _minValueZ = -15;
-    private int _maxValueZ = 16;
-
-    private void Start() => Initialize(_ObjectTemplates);
+    
+    private float _elapsedTime;
 
     private void Update()
     {
-        _elapserTime += Time.deltaTime;
+        _elapsedTime += Time.deltaTime;
 
-        if (_elapserTime > _secnodsBetweenSpawn)
+        if (_elapsedTime > _secnodsBetweenSpawn && TryGetObject(out Cube spawnableObject))
         {
-            if (TryGetObject(out Cube spawnableObject))
-            {
-                _elapserTime = 0;
+            _elapsedTime = 0;
 
-                SetObject(spawnableObject);
-            }
+            SetObject(spawnableObject);
         }
     }
 
@@ -41,9 +26,14 @@ public class CubeSpawner : CubesPool
 
     private Vector3 GetRandomSpawnPosition()
     {
-        int spawnPointX = Random.Range(_minValueX, _maxValueX);
-        int spawnPointY = Random.Range(_minValueY, _maxValueY);
-        int spawnPointZ = Random.Range(_minValueZ, _maxValueZ);
+        int minValueX = -14;
+        int maxValueX = 17;
+        int minValueZ = -14;
+        int maxValueZ = 17;
+        
+        int spawnPointX = Random.Range(minValueX, maxValueX);
+        int spawnPointZ = Random.Range(minValueZ, maxValueZ);
+        int spawnPointY = 30;
 
         return new Vector3(spawnPointX, spawnPointY, spawnPointZ);
     }
